@@ -1,0 +1,4 @@
+name: MessAround
+version: '${project.version}'
+main: com.ethan.messaround.Main
+api-version: 1.19
