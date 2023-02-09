@@ -55,7 +55,7 @@ public class ChickenFlyingEvents implements Listener {
         Location from = e.getFrom();
         Location to = e.getTo();
 
-        p.sendMessage(ChatColor.AQUA + "X: " + p.getVelocity().getX() + " /  Z: " + p.getVelocity().getZ());
+        //p.sendMessage(ChatColor.AQUA + "X: " + p.getVelocity().getX() + " /  Z: " + p.getVelocity().getZ());
 
         // get block below the player
         from.setY(from.getY()-1);
@@ -124,17 +124,12 @@ public class ChickenFlyingEvents implements Listener {
                 {
                     // uses chicken vector when gliding
                     // and updates xz vector to players inputs
-                    Vector playerChickenVector = chickenVectors.get(p);
 
                     // Gets the sign of the players attempted vectors
                     // and applies that to gliding vectors
                     // which changes vector direction according
                     // to player moves
-                    double differenceX = to.getX() - from.getX();
-                    double differenceZ = to.getZ() - from.getZ();
 
-                    double updatedVecX = Math.signum(differenceX);
-                    double updatedVecZ = Math.signum(differenceZ);
                     // VECTORS DON'T CONTAIN THE PLAYERS DIRECTION
                     // THAT WILL HAVE TO BE DETERMINED WITH FROM & TO LOCATION
 
@@ -144,17 +139,11 @@ public class ChickenFlyingEvents implements Listener {
                     // we need to just set new x & z velocity to the signs
                     // we retrieve, can create util function for this
 
+                    Vector updatedVector = GlidingUtils.directionalVelocityChange(to, from, chickenVectors.get(p));
 
+                    p.setVelocity(updatedVector);
 
-                    p.sendMessage(ChatColor.YELLOW + "X sign: " + updatedVecX);
-                    p.sendMessage(ChatColor.GOLD + "Z sign: " + updatedVecZ);
-
-                    playerChickenVector.setX(playerChickenVector.getX()*updatedVecX);
-                    playerChickenVector.setZ(playerChickenVector.getZ()*updatedVecZ);
-
-                    p.setVelocity(playerChickenVector);
-
-                    chickenVectors.put(p, playerChickenVector);
+                    chickenVectors.put(p, updatedVector);
                 }
             }
         }
